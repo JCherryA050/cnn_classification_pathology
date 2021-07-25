@@ -10,6 +10,8 @@ __pycache__/
 data/
 images/
 test/
+flask_app/
+
 
 # Distribution / packaging
 .Python
