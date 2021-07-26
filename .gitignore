@@ -8,10 +8,8 @@ __pycache__/
 
 # Data
 data/
-images/
+images/whole_slide_images/
 test/
-flask_app/
-
 
 # Distribution / packaging
 .Python
