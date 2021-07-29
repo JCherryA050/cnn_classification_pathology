@@ -26,7 +26,7 @@ The following report outlines preliminary work on a Convolutional Neural Network
 
 ## Data
 
-![examples](images/example.png)
+![examples](images/examples.png)
 
 The data used in this study comes from Kaggle and can be found [here](https://www.kaggle.com/paultimothymooney/breast-histopathology-images). The data consisits of 162 whole mount slide images of Breast Cancer (BCa) specimens scanned at 40x. The images were then split into 50x50 pixel patches giving 277,524 patches in total. The patches are classified as '0' for IDC-negative and '1' for IDC-positive. The classification process is done through conventional analysis and is based on common features such as count (e.g., mitotic events), segmentation (e.g., nuclei), and tissue classification (e.g., cancerous vs. non-cancerous). An outline of the process and some pitfalls of the analysis technique can be found in [this](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4977982/) publication. The file naming convention is as follows:
 
