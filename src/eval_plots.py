@@ -2,6 +2,8 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.metrics import confusion_matrix
+
 
 def make_confusion_matrix(cf,
                           group_names=None,
@@ -77,7 +79,6 @@ def make_confusion_matrix(cf,
     else:
         stats_text = ""
 
-
     # SET FIGURE PARAMETERS ACCORDING TO OTHER ARGUMENTS
     if figsize==None:
         #Get default figure size if not set
@@ -87,9 +88,8 @@ def make_confusion_matrix(cf,
         #Do not show categories if xyticks is False
         categories=False
 
-
     # MAKE THE HEATMAP VISUALIZATION
-    plt.figure(figsize=figsize)
+    fig = plt.figure(figsize=figsize)
     sns.heatmap(cf,annot=box_labels,fmt="",cmap=cmap,cbar=cbar,xticklabels=categories,yticklabels=categories)
 
     if xyplotlabels:
@@ -100,3 +100,99 @@ def make_confusion_matrix(cf,
     
     if title:
         plt.title(title)
+    fig.tight_layout()
+    fig.savefig('./images/'+title+'.png')
+    return
+
+# Function for plotting the test metrics with respect to cutoff values
+def plot_metrics(y_labels,probabilities,cuts):
+    '''This function is used to plot the test metrics with respect to an array of cutoff values.
+
+    Arguments:
+    ---------
+    y_labels: [np.array,list], array containing labels for each patch image in the dataset
+    probabilities: [np.array,list], array containing the model predictions for each patch image in the dataset
+    cuts: [np.array,list], array containing the cutoff values intended to plot 
+    
+    Output:
+    fig: plt.Figure, figure of the test metrics with respect to the array of cutoff values
+
+    '''
+
+    # Initialize arrays for accuracy, precision, recall, and f1-score
+    accuracies = []
+    precisions = []
+    recalls = []
+    f1_scores = []
+    for cut in cuts:
+        
+        # Classifications based on the cut values given
+        y_predicts = [1 if prob > cut else 0 for prob in probabilities]
+
+        # Create the confusion matrix with the predictions and true labels
+        cf_matrix = confusion_matrix(y_labels,y_predicts)
+
+
+        # Metrics for Binary Confusion Matrices
+        accuracy = np.trace(cf_matrix) / float(np.sum(cf_matrix))
+        precision = cf_matrix[1,1] / sum(cf_matrix[:,1])
+        recall = cf_matrix[1,1] / sum(cf_matrix[1,:])
+        f1_score = 2*precision*recall / (precision + recall)
+
+        # Adding the metrics to lists of metrics with different cut values
+        accuracies.append(accuracy)
+        precisions.append(precision)
+        recalls.append(recall)
+        f1_scores.append(f1_score)
+
+    # Plotting the test metrics with respect to the cutoff values
+    fig,ax = plt.subplots(figsize = (8,8))
+    ax.plot(cuts,accuracies,label='accuracy')
+    ax.plot(cuts,precisions,label='precision')
+    ax.plot(cuts,recalls,label='recall')
+    ax.plot(cuts,f1_scores,label='F1-score')
+    ax.set_title('Optimizing Cuttoff Values')
+    ax.set_xlabel('Cutoff Value')
+    ax.set_ylabel('Evaluation Metrics in Decimal')
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig('./images/denseNet201_optimization.png')
+    return fig
+
+def plot_rocs(models):
+    
+    # Initialize the figure and plot the 50% line
+    fig,ax = plt.subplots(figsize=(8,8))
+    ax.plot([0, 1], [0, 1], 'k--')
+
+    # For loop to loop through the models, make predictions for each model and plot the ROC curve
+    for k,v in models.items():
+
+        # set up batch generator for validation set define the path to the test set
+        test_data_path = './data/split/test'
+
+        # Initializing the test generator using the target size for the model 
+        test_generator = ImageDataGenerator(rescale=1./255).flow_from_directory(
+        test_data_path, 
+        target_size = v[1], 
+        batch_size = 32,shuffle=False,class_mode='binary')
+
+        # Making the predictions on the test set
+        probs = v[0].predict(test_generator)
+        probs_list = [prob[0] for prob in probs]
+        # Calculating the false positive rate and true positive rate
+        fpr, tpr, thresholds = roc_curve(y_test, probs_list)
+
+    
+        if k == 'Second Model':
+            ax.plot(1 - fpr, 1 - tpr, label=k + '(area = {:.3f})'.format(auc(1 - fpr,1 - tpr)))
+        else:
+            ax.plot(fpr, tpr, label= k + '(area = {:.3f})'.format(auc(fpr, tpr)))
+
+    ax.set_xlabel('False positive rate')
+    ax.set_ylabel('True positive rate')
+    ax.set_title('ROC curve')
+    ax.legend(loc='best')
+    fig.tight_layout()
+    fig.savefig('./images/ROC_comparisons.png')
+    return fig
