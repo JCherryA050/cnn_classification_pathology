@@ -80,7 +80,7 @@ Below is a list of the contents of this repository - instructions for using them
 
 - `README.md`: The README for this repo branch explaining it's contents
 - `technical_report.ipynb`: Full technical report of the study, results, conclusions, and next steps
-- `phase_5_nontechnical.pdf`: A starter slide deck presenting your project - here is an [editable version](https://docs.google.com/presentation/d/1ANYVs-CsPnfNA2bvQ-8mNlD9GpgZbI9_nY7lcUvdZfY/edit#slide=id.p)
+- `nontechnical_presentation.pdf`: A starter slide deck presenting your project - here is an [editable version](https://docs.google.com/presentation/d/1ANYVs-CsPnfNA2bvQ-8mNlD9GpgZbI9_nY7lcUvdZfY/edit#slide=id.p)
 - `data` Folder: The folder containing the data referenced in the code (this is not included in the repo but can be downloaded from [here](https://www.kaggle.com/paultimothymooney/breast-histopathology-images))
 - `images` Folder: contains the images referenced here and the non technical presentation
 - `.gitignore`: Hidden file that includes the directories and files not included in this repo
