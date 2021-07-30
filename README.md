@@ -54,7 +54,7 @@ All models use the Adam optimizer with a ```binary_crossentropy``` loss function
 
 The best model was the regularized second model with three hidden layers and L2 regularization as shown in the ROC-curve comparisons above. The predicions made from the model are confidence values of the image being classified as IDC-Positive. The cutoff is skewed left to optimize on the Recall of the model as falsely predicting IDCnegative presents the most risk to patients. The cutoff for binary classification is 0.25 and the confidence matrix for the model below was made with this cutoff value.
 
-![confidence](images/Model Confusion Matrix.png)
+![confidence](images/Model_Confusion_Matrix.png)
 
 The Recall is optimized at ____ with some sacrifice in the accuracy of the model. Again, this is a reasonable tradeoff as, in practice, a false positve represents less of a risk and can easily be corrected with a trained eye. An example of the predictions made with the best model are displayed below. The model performs well in predicting IDC-Positive areas as cancerous, however falsly pedicts some non-cancerous regions as IDC-positive. The model seems to be overly color sensitive and fails to pick up on more minute details of cancerous regions. Future work will include reducing the sensitivity of the model and added complexity.
 
