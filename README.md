@@ -56,7 +56,7 @@ The best model was the regularized second model with three hidden layers and L2 
 
 ![confidence](images/Model_Confusion_Matrix.png)
 
-The Recall is optimized at ____ with some sacrifice in the accuracy of the model. Again, this is a reasonable tradeoff as, in practice, a false positves represent less of a risk and can easily be corrected with a trained eye. An example of the predictions made with the best model are displayed below. 
+The Recall is optimized at 81.4% with some sacrifice in the accuracy of the model. Again, this is a reasonable tradeoff as, in practice, a false positves represent less of a risk and can easily be corrected with a trained eye. An example of the predictions made with the best model are displayed below. 
 
 ![wsiExample](images/example_whole_slide.png)
 
