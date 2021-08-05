@@ -10,6 +10,7 @@ __pycache__/
 data/
 images/whole_slide_images/
 test/
+notebooks/test_models/
 
 # Distribution / packaging
 .Python

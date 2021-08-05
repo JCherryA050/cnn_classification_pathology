@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import confusion_matrix
-
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from sklearn.metrics import roc_curve, auc
 
 def make_confusion_matrix(cf,
                           group_names=None,
@@ -101,7 +102,7 @@ def make_confusion_matrix(cf,
     if title:
         plt.title(title)
     fig.tight_layout()
-    fig.savefig('./images/'+title+'.png')
+    # fig.savefig('./images/'+title+'.png')
     return
 
 # Function for plotting the test metrics with respect to cutoff values
@@ -156,10 +157,10 @@ def plot_metrics(y_labels,probabilities,cuts):
     ax.set_ylabel('Evaluation Metrics in Decimal')
     ax.legend()
     fig.tight_layout()
-    fig.savefig('./images/denseNet201_optimization.png')
+    # fig.savefig('./images/denseNet201_optimization.png')
     return fig
 
-def plot_rocs(models):
+def plot_rocs(models,test_data_path):
     
     # Initialize the figure and plot the 50% line
     fig,ax = plt.subplots(figsize=(8,8))
@@ -168,14 +169,13 @@ def plot_rocs(models):
     # For loop to loop through the models, make predictions for each model and plot the ROC curve
     for k,v in models.items():
 
-        # set up batch generator for validation set define the path to the test set
-        test_data_path = './data/split/test'
-
         # Initializing the test generator using the target size for the model 
         test_generator = ImageDataGenerator(rescale=1./255).flow_from_directory(
         test_data_path, 
         target_size = v[1], 
         batch_size = 32,shuffle=False,class_mode='binary')
+        y_test = test_generator.labels
+
 
         # Making the predictions on the test set
         probs = v[0].predict(test_generator)
@@ -183,16 +183,15 @@ def plot_rocs(models):
         # Calculating the false positive rate and true positive rate
         fpr, tpr, thresholds = roc_curve(y_test, probs_list)
 
-    
-        if k == 'Second Model':
-            ax.plot(1 - fpr, 1 - tpr, label=k + '(area = {:.3f})'.format(auc(1 - fpr,1 - tpr)))
-        else:
-            ax.plot(fpr, tpr, label= k + '(area = {:.3f})'.format(auc(fpr, tpr)))
+        # if tpr/fpr < 0.5:
+        #     ax.plot(1 - fpr, 1 - tpr, label=k + '(area = {:.3f})'.format(auc(1 - fpr,1 - tpr)))
+        # else:
+        ax.plot(fpr, tpr, label= k + '(area = {:.3f})'.format(auc(fpr, tpr)))
 
     ax.set_xlabel('False positive rate')
     ax.set_ylabel('True positive rate')
     ax.set_title('ROC curve')
     ax.legend(loc='best')
     fig.tight_layout()
-    fig.savefig('./images/ROC_comparisons.png')
+    # fig.savefig('./images/ROC_comparisons.png')
     return fig

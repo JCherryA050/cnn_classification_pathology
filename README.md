@@ -56,15 +56,23 @@ The best model was the regularized second model with three hidden layers and L2 
 
 ![confidence](images/Model_Confusion_Matrix.png)
 
-The Recall is optimized at ____ with some sacrifice in the accuracy of the model. Again, this is a reasonable tradeoff as, in practice, a false positve represents less of a risk and can easily be corrected with a trained eye. An example of the predictions made with the best model are displayed below. The model performs well in predicting IDC-Positive areas as cancerous, however falsly pedicts some non-cancerous regions as IDC-positive. The model seems to be overly color sensitive and fails to pick up on more minute details of cancerous regions. Future work will include reducing the sensitivity of the model and added complexity.
+The Recall is optimized at ____ with some sacrifice in the accuracy of the model. Again, this is a reasonable tradeoff as, in practice, a false positves represent less of a risk and can easily be corrected with a trained eye. An example of the predictions made with the best model are displayed below. 
 
 ![wsiExample](images/example_whole_slide.png)
+
+Example of a whole slide image pieced together from the Kaggle data. This image represents scan number 9073. A map of the classifications is below, the red patches represent areas that show cancerous regions of the tissue and green patches represent non-cancerous areas.
+
 ![classMapExample](images/example_class_map.png)
+
+The heat map below represents prediction probabilities from zero  (darker regions) to 1 (lighter regions). 
+
 ![heatMapExample](images/example_heat_map.png)
+
+The model performs well in predicting IDC-Positive areas as cancerous, however falsly pedicts some non-cancerous regions as IDC-positive. The model seems to be overly color sensitive and fails to pick up on more minute details of cancerous regions. Future work will include optimizing the sensitivity of the model with added complexity.
 
 ## Conclusions
 
-A Convolutional Neural Network is proposed for the identification of cancerous regions of whole slide stained biopsy images. Through iteration, the best model performed well with an accuracy of 87.5% and an AUC of 0. The final model was used to predict cancerous regions in an example WSI and was shown to perform well, predicting cancerous regions of the WSI however also giving false positive predictions of non-cancerous regions. This model, however is used as a preliminary screening and the over sensitivity of the model becomes less of an issue when followed up with conventional analysis.
+A Convolutional Neural Network is proposed for the identification of cancerous regions of whole slide stained biopsy images. Through iteration, the best model performed well with an accuracy of 87.5% and an AUC of 0.925. The final model was used to predict cancerous regions in an example WSI and was shown to perform well, predicting cancerous regions of the WSI however also giving false positive predictions of non-cancerous regions. This model, however is used as a preliminary screening and the over sensitivity of the model becomes less of an issue when followed up with conventional analysis.
 
 ## Next Steps
 
